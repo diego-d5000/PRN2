@@ -11,18 +11,34 @@ namespace PRN2_DAPL
         private string titulo;
         private string ubicacion;
 
-        // funcion main
-        public static void Main(string[] args)
+        // constructor con los tres argumentos
+        public Libro(string autor, string titulo, string ubicacion)
         {
-            Libro miLibro = new Libro();
-            miLibro.Autor = "Martin, Robert Cecil";
-            miLibro.Titulo = "The Clean Coder: A Code of Conduct for Professional Programmers";
-            miLibro.Ubicacion = "Upper Saddle River, NJ";
+            this.titulo = titulo;
+            this.autor = autor;
+            this.ubicacion = ubicacion;
+        }
 
-            Console.WriteLine(miLibro.Autor + " (2011). " + miLibro.Titulo + "." + miLibro.Ubicacion);
+        // se utiliza la estrategia de la sobrecarga de constructores llamada "chaining constructors"
+        public Libro(string autor) : this(autor, null, null)
+        {
+        }
 
-            // para prevenir el cierre de la ventana
-            Console.ReadLine();
+        public Libro(string autor, string titulo) : this(autor, titulo, null)
+        {
+        }
+
+        ~Libro()
+        {
+
+            this.titulo = null;
+            this.autor = null;
+            this.ubicacion = null;
+
+            Console.WriteLine(String.Format("Valores al terminar la destruccion:" +
+                " titulo: {0}." +
+                " autor: {1}." +
+                " ubicacion: {2}", titulo, autor, ubicacion));
         }
 
         // Se crean las propiedades con los respectivos get y sets
@@ -45,6 +61,13 @@ namespace PRN2_DAPL
         {
             get { return ubicacion; }
             set { ubicacion = value; }
+        }
+
+        public void MostrarDatos()
+        {
+            Console.WriteLine(String.Format(" titulo: {0}. \n" +
+                " autor: {1}. \n" +
+                " ubicacion: {2} \n", titulo, autor, ubicacion));
         }
     }
 }
