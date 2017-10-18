@@ -7,38 +7,33 @@ namespace PRN2_DAPL
     class Programa
     {
 
+        // se crea un metodo llamado suma que recibe dos enteros y devuelve la suma de estos
+        private static int suma(int a, int b)
+        {
+            return a + b;
+        }
+
+        // se sobrecarga el metodo suma, esta vez recibe 2 cadenas y decvuelve la suma de estas
+        private static string suma(string a, string b)
+        {
+            return a + b;
+        }
+
         // funcion main
         public static void Main(string[] args)
         {
-            Console.WriteLine("Constructor un argumento: ");
-            // constructor con un argumento
-            Libro libro = new Libro("Martin, Robert Cecil");
-            libro.MostrarDatos();
-            // eliminar la referencia
-            libro = null;
-            // se llama al recolector de basura manualmente
-            GC.Collect(GC.MaxGeneration);
-            GC.WaitForPendingFinalizers();
+            // se prueba el metodo sobrecargado
+            Console.WriteLine("Metodo sobrecargado suma con parametros int:");
+            int resultadoUno = suma(11, 12);
+            Console.WriteLine("suma(11,23) = " + resultadoUno);
 
-            Console.WriteLine("Constructor dos argumentos: ");
-            // se prueban los otros constructores
-            libro = new Libro("Martin, Robert Cecil", "The Clean Coder: A Code of Conduct for Professional Programmers");
-            libro.MostrarDatos();
-            libro = null;
-            GC.Collect(GC.MaxGeneration);
-            GC.WaitForPendingFinalizers();
+            Console.WriteLine("Metodo sobrecargado suma con parametros string:");
+            string resultadoDos = suma("Hola", "Mundo!");
+            Console.WriteLine("suma(\"Hola\", \"Mundo!\") = " + resultadoDos);
 
-            Console.WriteLine("Constructor tres argumentos: ");
-            libro = new Libro("Martin, Robert Cecil", "The Clean Coder: A Code of Conduct for Professional Programmers", "Upper Saddle River, NJ");
-            libro.MostrarDatos();
-            libro = null;
-            GC.Collect(GC.MaxGeneration);
-            GC.WaitForPendingFinalizers();
-
-            // para prevenir el cierre de la ventana
+            // se evita el cierre automatico del programa y la ventana
             Console.ReadLine();
         }
-
 
     }
 }
