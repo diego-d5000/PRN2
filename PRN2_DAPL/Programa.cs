@@ -25,7 +25,7 @@ namespace PRN2_DAPL
             // se prueba el metodo sobrecargado
             Console.WriteLine("Metodo sobrecargado suma con parametros int:");
             int resultadoUno = suma(11, 12);
-            Console.WriteLine("suma(11,23) = " + resultadoUno);
+            Console.WriteLine("suma(11, 12) = " + resultadoUno);
 
             Console.WriteLine("Metodo sobrecargado suma con parametros string:");
             string resultadoDos = suma("Hola", "Mundo!");
