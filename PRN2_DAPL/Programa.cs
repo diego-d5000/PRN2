@@ -6,33 +6,113 @@ namespace PRN2_DAPL
 {
     class Programa
     {
-
-        // se crea un metodo llamado suma que recibe dos enteros y devuelve la suma de estos
-        private static int suma(int a, int b)
+        // metodo utilidad para darle color de fondo y texto a una impresion de consola
+        static private void WriteLineWithFormat(string text, ConsoleColor background, ConsoleColor textColor)
         {
-            return a + b;
+            ConsoleColor originalBackgroundColor = Console.BackgroundColor;
+            ConsoleColor originalTextColor = Console.ForegroundColor;
+            Console.BackgroundColor = background;
+            Console.ForegroundColor = textColor;
+            Console.WriteLine(text);
+            Console.ForegroundColor = originalTextColor;
+            Console.BackgroundColor = originalBackgroundColor;
         }
 
-        // se sobrecarga el metodo suma, esta vez recibe 2 cadenas y decvuelve la suma de estas
-        private static string suma(string a, string b)
+        // metodo sobrecargado para imprimir un texto en consolo solo cambiando el fondo
+        static private void WriteLineWithFormat(string text, ConsoleColor background)
         {
-            return a + b;
+            WriteLineWithFormat(text, background, ConsoleColor.White);
         }
 
         // funcion main
         public static void Main(string[] args)
         {
-            // se prueba el metodo sobrecargado
-            Console.WriteLine("Metodo sobrecargado suma con parametros int:");
-            int resultadoUno = suma(11, 12);
-            Console.WriteLine("suma(11, 12) = " + resultadoUno);
+            int selectedOption = 1;
+            ConsoleKey keyPressed;
 
-            Console.WriteLine("Metodo sobrecargado suma con parametros string:");
-            string resultadoDos = suma("Hola", "Mundo!");
-            Console.WriteLine("suma(\"Hola\", \"Mundo!\") = " + resultadoDos);
+            // se inicia un bucle que solo sale con la tecla esc. para terminar el programa
+            do
+            {
+                // se borra la consola y se imprime el menu
+                Console.Clear();
+                Console.WriteLine(" ____ ___                       _________                \r\n|    |   \\______ ___________   /   _____/__.__. ______   \r\n|    |   /  ___// __ \\_  __ \\  \\_____  <   |  |/  ___/   \r\n|    |  /\\___ \\\\  ___/|  | \\/  /        \\___  |\\___ \\    \r\n|______//____  >\\___  >__|    /_______  / ____/____  > /\\\r\n             \\/     \\/                \\/\\/         \\/  \\/\r\n\r\n");
+                Console.WriteLine("    ----------- Biblioteca \"Los Arboles\" ---------- \n\n\n\n");
 
-            // se evita el cierre automatico del programa y la ventana
-            Console.ReadLine();
+                WriteLineWithFormat("Ingresar Usuario \n\n", selectedOption == 1 ? ConsoleColor.Blue : ConsoleColor.Black);
+                WriteLineWithFormat("Registrar Usuario", selectedOption == 2 ? ConsoleColor.Blue : ConsoleColor.Black);
+
+               keyPressed = Console.ReadKey().Key;
+
+                // se cambia la opciion con la flecha y se selecciona con enter
+                switch (keyPressed)
+                {
+                    case ConsoleKey.UpArrow:
+                        selectedOption = 1;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        selectedOption = 2;
+                        break;
+                    case ConsoleKey.Enter:
+                        ShowNextMenu(selectedOption);
+                        break;
+                }
+            } while(keyPressed != ConsoleKey.Escape);
+        }
+
+        // se ejecuta un flujo especifico dependiendo de la opcion seleccionada
+        private static void ShowNextMenu(int option)
+        {
+            switch (option)
+            {
+                case 1:
+                    ShowViewUserFlow();
+                    break;
+                case 2:
+                    ShowRegisterUserFlow();
+                    break;
+            }
+        }
+
+        // el primer flujo pide el nombre de usuario y muestra sus datos
+        private static void ShowViewUserFlow()
+        {
+            Console.Clear();
+            WriteLineWithFormat("Nombre de Usuario: ", ConsoleColor.Black, ConsoleColor.Green);
+            string username = Console.ReadLine();
+
+            InMemoryDB db = InMemoryDB.Instance;
+
+            User user = db.GetUserByUsername(username);
+
+            Console.WriteLine("\n\n\n");
+
+            if(user != null)
+            {
+                Console.WriteLine(user.GeneralInfo);
+                Console.ReadLine();
+            } else
+            {
+                Console.WriteLine("Usuario no encontrado!");
+                Console.ReadLine();
+            }
+        }
+
+        // El segundo flujo registra un usuario pidiendo sus datos.
+        private static void ShowRegisterUserFlow()
+        {
+            Console.Clear();
+            WriteLineWithFormat("Nombre de usuario: ", ConsoleColor.Black, ConsoleColor.Blue);
+            string username = Console.ReadLine();
+            WriteLineWithFormat("Nombre: ", ConsoleColor.Black, ConsoleColor.Blue);
+            string name = Console.ReadLine();
+            WriteLineWithFormat("Apellido: ", ConsoleColor.Black, ConsoleColor.Blue);
+            string lastname = Console.ReadLine();
+
+            User nextUser = new User(name, lastname, username);
+
+            InMemoryDB db = InMemoryDB.Instance;
+
+            db.saveUser(nextUser);
         }
 
     }
