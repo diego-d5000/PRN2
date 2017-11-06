@@ -6,34 +6,37 @@ namespace PRN2_DAPL
 {
     class Programa
     {
-
-        // se crea un metodo llamado suma que recibe dos enteros y devuelve la suma de estos
-        private static int suma(int a, int b)
-        {
-            return a + b;
-        }
-
-        // se sobrecarga el metodo suma, esta vez recibe 2 cadenas y decvuelve la suma de estas
-        private static string suma(string a, string b)
-        {
-            return a + b;
-        }
-
         // funcion main
         public static void Main(string[] args)
         {
-            // se prueba el metodo sobrecargado
-            Console.WriteLine("Metodo sobrecargado suma con parametros int:");
-            int resultadoUno = suma(11, 12);
-            Console.WriteLine("suma(11, 12) = " + resultadoUno);
+            List<Articulo> articulosUno = new List<Articulo>();
+            articulosUno.Add(new Articulo(8, 35.50m, "Articulo A"));
+            articulosUno.Add(new Articulo(10, 5.30m, "Articulo B"));
+            articulosUno.Add(new Articulo(30, 1.20m, "Articulo Z"));
 
-            Console.WriteLine("Metodo sobrecargado suma con parametros string:");
-            string resultadoDos = suma("Hola", "Mundo!");
-            Console.WriteLine("suma(\"Hola\", \"Mundo!\") = " + resultadoDos);
+            Cliente cliente = new Cliente("Diego Plascencia", "Manzana 43", "PALDxxxxxx");
 
-            // se evita el cierre automatico del programa y la ventana
+            Factura facturaUno = new Factura(1, DateTime.Today, cliente, articulosUno, 0.16f, 100);
+
+            Console.WriteLine("Factura " + facturaUno.Numero + ": \n" +
+                "Total: " + facturaUno.BaseImponible + "\n" +
+                "IVA: 16% " + "Cuota: " + facturaUno.Cuota + "\n" +
+                "Total + IVA + Cuota: " + facturaUno.Total);
+
+            List<Articulo> articulosDos = new List<Articulo>();
+            articulosDos.Add(new Articulo(50, 2.50m, "Articulo B"));
+            articulosDos.Add(new Articulo(2, 10000, "Articulo C"));
+            articulosDos.Add(new Articulo(15, 19.90m, "Articulo X"));
+
+            Console.WriteLine("\n\n\n");
+
+            Presupuesto presupuestoUno = new Presupuesto(1, DateTime.Today, cliente, articulosDos, DateTime.Today.AddMilliseconds(5 * 24 * 60 * 60 * 1000));
+
+            Console.WriteLine("Presupuesto " + presupuestoUno.Numero + ": \n" +
+                "Vencimiento: " + presupuestoUno.FechaCaducidad + "\n" +
+                "Total: " + presupuestoUno.Total);
+
             Console.ReadLine();
         }
-
     }
 }
