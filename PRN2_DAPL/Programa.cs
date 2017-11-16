@@ -41,7 +41,7 @@ namespace PRN2_DAPL
                 WriteLineWithFormat("Ingresar Usuario \n\n", selectedOption == 1 ? ConsoleColor.Blue : ConsoleColor.Black);
                 WriteLineWithFormat("Registrar Usuario", selectedOption == 2 ? ConsoleColor.Blue : ConsoleColor.Black);
 
-               keyPressed = Console.ReadKey().Key;
+                keyPressed = Console.ReadKey().Key;
 
                 // se cambia la opciion con la flecha y se selecciona con enter
                 switch (keyPressed)
@@ -53,66 +53,146 @@ namespace PRN2_DAPL
                         selectedOption = 2;
                         break;
                     case ConsoleKey.Enter:
-                        ShowNextMenu(selectedOption);
+                        (selectedOption == 1 ? (Action)ShowViewUserFlow : ShowRegisterUserFlow)();
                         break;
                 }
-            } while(keyPressed != ConsoleKey.Escape);
-        }
-
-        // se ejecuta un flujo especifico dependiendo de la opcion seleccionada
-        private static void ShowNextMenu(int option)
-        {
-            switch (option)
-            {
-                case 1:
-                    ShowViewUserFlow();
-                    break;
-                case 2:
-                    ShowRegisterUserFlow();
-                    break;
-            }
+            } while (keyPressed != ConsoleKey.Escape);
         }
 
         // el primer flujo pide el nombre de usuario y muestra sus datos
         private static void ShowViewUserFlow()
         {
+
+            int selectedOption = 1;
+            ConsoleKey keyPressed;
+
             Console.Clear();
             WriteLineWithFormat("Nombre de Usuario: ", ConsoleColor.Black, ConsoleColor.Green);
             string username = Console.ReadLine();
 
             InMemoryDB db = InMemoryDB.Instance;
 
-            User user = db.GetUserByUsername(username);
+            LibUser user = db.GetUserByUsername(username);
 
-            Console.WriteLine("\n\n\n");
+            do
+            {
+                Console.Clear();
+                if (user != null)
+                {
+                    RegisteredUser registeredUser = (RegisteredUser)user;
 
-            if(user != null)
-            {
-                Console.WriteLine(user.GeneralInfo);
-                Console.ReadLine();
-            } else
-            {
-                Console.WriteLine("Usuario no encontrado!");
-                Console.ReadLine();
-            }
+                    Console.WriteLine(registeredUser.GeneralInfo);
+                    Console.WriteLine("\n\n\n");
+                    WriteLineWithFormat("Ingresar Multa \n\n", selectedOption == 1 ? ConsoleColor.Blue : ConsoleColor.Black);
+                    WriteLineWithFormat("Pagar Multa", selectedOption == 2 ? ConsoleColor.Blue : ConsoleColor.Black);
+
+                    keyPressed = Console.ReadKey().Key;
+
+                    switch (keyPressed)
+                    {
+                        case ConsoleKey.UpArrow:
+                            selectedOption = 1;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            selectedOption = 2;
+                            break;
+                        case ConsoleKey.Enter:
+                            if (selectedOption == 1)
+                            {
+                                ShowAddFineFlow(registeredUser);
+                            }
+                            else if (selectedOption == 2)
+                            {
+                                ShowAPayFineFlow(registeredUser);
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Usuario no encontrado!");
+                    Console.ReadLine();
+                    keyPressed = ConsoleKey.Escape;
+                }
+            } while (keyPressed != ConsoleKey.Escape);
+
         }
 
         // El segundo flujo registra un usuario pidiendo sus datos.
         private static void ShowRegisterUserFlow()
         {
             Console.Clear();
-            WriteLineWithFormat("Nombre de usuario: ", ConsoleColor.Black, ConsoleColor.Blue);
+            WriteLineWithFormat("Nombre de usuario: ", ConsoleColor.Black, ConsoleColor.Cyan);
             string username = Console.ReadLine();
-            WriteLineWithFormat("Nombre: ", ConsoleColor.Black, ConsoleColor.Blue);
+            WriteLineWithFormat("Nombre: ", ConsoleColor.Black, ConsoleColor.Cyan);
             string name = Console.ReadLine();
-            WriteLineWithFormat("Apellido: ", ConsoleColor.Black, ConsoleColor.Blue);
+            WriteLineWithFormat("Apellido: ", ConsoleColor.Black, ConsoleColor.Cyan);
             string lastname = Console.ReadLine();
 
-            User nextUser = new User(name, lastname, username);
+            RegisteredUser nextUser = new RegisteredUser(name, lastname, username);
 
             InMemoryDB db = InMemoryDB.Instance;
 
             db.saveUser(nextUser);
+        }
+
+        private static void ShowAddFineFlow(RegisteredUser user)
+        {
+            Console.Clear();
+            WriteLineWithFormat("Monto: ", ConsoleColor.Black, ConsoleColor.Cyan);
+            decimal ammount = Decimal.Parse(Console.ReadLine());
+
+            Fine nextFine = new Fine(DateTime.Today, ammount);
+
+            user.AddFine(nextFine);
+        }
+
+        private static void ShowAPayFineFlow(RegisteredUser user)
+        {
+            List<Fine> fines = user.Fines;
+            int selectedIndex = 0;
+            ConsoleKey keyPressed;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Seleccione multa a pagar: \n\n ");
+                Console.WriteLine("Numero   Monto     Fecha");
+
+                for (int i = 0; i < fines.Count; i++)
+                {
+                    Fine fine = fines[i];
+                    string fineText = String.Format("{0}.     ${1}   {2}", i + 1, fine.Ammount, fine.CreationDate.ToShortDateString());
+
+                    if (i != selectedIndex)
+                    {
+                        Console.WriteLine(fineText);
+                    }
+                    else
+                    {
+                        WriteLineWithFormat(fineText, ConsoleColor.Red, ConsoleColor.White);
+
+                    }
+                }
+
+                keyPressed = Console.ReadKey().Key;
+
+                int add = keyPressed == ConsoleKey.UpArrow ? -1 : keyPressed == ConsoleKey.DownArrow ? 1 : 0;
+                if (add != 0)
+                {
+                    selectedIndex = ((selectedIndex + add) % fines.Count);
+                }
+                else if (keyPressed == ConsoleKey.Enter)
+                {
+                    user.RemoveFine(selectedIndex);
+                    InMemoryDB db = InMemoryDB.Instance;
+                    db.saveUser(user);
+
+                    Console.WriteLine("Multa pagada, presione ESC para salir");
+                    keyPressed = Console.ReadKey().Key;
+                }
+
+            } while (keyPressed != ConsoleKey.Escape);
         }
 
     }

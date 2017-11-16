@@ -33,25 +33,25 @@ namespace PRN2_DAPL
 
 
         // Metodo para obtener un usuario por su id (GUID)
-        public User GetUserByGuid(Guid userGuid)
+        public LibUser GetUserByGuid(Guid userGuid)
         {
             Dictionary<Guid, Object> userTable = this.db["User"];
 
             if (userTable.ContainsKey(userGuid))
             {
-                return (User)this.db["User"][userGuid];
+                return (LibUser)this.db["User"][userGuid];
             }
             else return null;
         }
 
         // Se busca al usuario por su nombre de usuario
-        public User GetUserByUsername(string username)
+        public LibUser GetUserByUsername(string username)
         {
             Dictionary<Guid, Object> userTable = this.db["User"];
 
-            foreach(User user in userTable.Values)
+            foreach(LibUser user in userTable.Values)
             {
-                if(user.UserName == username)
+                if(user.Username == username)
                 {
                     return user;
                 }
@@ -61,11 +61,11 @@ namespace PRN2_DAPL
         }
 
         // Se guarda al usuario en el almacenamiento
-        public void saveUser(User user)
+        public void saveUser(LibUser user)
         {
             Dictionary<Guid, Object> userTable = this.db["User"];
 
-            if (userTable.ContainsKey(user.AccountNumber))
+            if (!userTable.ContainsKey(user.AccountNumber))
             {
                 userTable.Add(user.AccountNumber, user);
             }
