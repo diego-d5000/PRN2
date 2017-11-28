@@ -43,7 +43,7 @@ namespace PRN2_DAPL
                             }
                             catch (ArgumentOutOfRangeException e)
                             {
-                                Console.WriteLine("IndexOutOfRangeException, no existe el indice: " + e.Message);
+                                Console.WriteLine("ArgumentOutOfRangeException, no existe el indice: " + e.Message);
                                 continue;
                             }
                         }
