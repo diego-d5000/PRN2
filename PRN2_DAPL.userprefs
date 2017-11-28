@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{9CF3569F-3B61-4453-9F69-729E6C1BB307}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PRN2_DAPL/Factura.cs">
+    <Files>
+      <File FileName="PRN2_DAPL/Programa.cs" Line="18" Column="35" />
+      <File FileName="PRN2_DAPL/Factura.cs" Line="42" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.PRN2__DAPL PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>

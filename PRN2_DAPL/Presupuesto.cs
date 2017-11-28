@@ -20,6 +20,26 @@ namespace PRN2_DAPL
         }
 
         // Se implementa la propiedad abstracta Total de DocumentoMercantil
-        public override decimal Total { get => Detalles.Select(detalle => detalle.Precio * detalle.Unidades).Aggregate(0m, (a, b) => (a + b)); }
+        public override decimal Total
+        {
+            get
+            {
+                checked
+                {
+                    decimal total = 0;
+                    try
+                    {
+                        total = Detalles.Select(detalle => detalle.Precio * detalle.Unidades).Aggregate(0m, (a, b) => (a + b));
+                    }
+                    catch (OverflowException e)
+                    {
+                        Console.WriteLine("OverflowException, total demasiado grande: " + e.Message);
+                        total = decimal.MaxValue;
+                    }
+                    return total;
+
+                }
+            }
+        }
     }
 }

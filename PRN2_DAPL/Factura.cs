@@ -26,7 +26,36 @@ namespace PRN2_DAPL
 
         public decimal BaseImponible
         {
-            get { return Detalles.Select(detalle => detalle.Precio * detalle.Unidades).Aggregate(0m, (a, b) => (a + b)); }
+            get
+            {
+                decimal baseTotal;
+
+                checked
+                {
+                    try
+                    {
+                        baseTotal = 0;
+                        for (int i = 0; i <= Detalles.Count; i++)
+                        {
+                            try
+                            {
+                                baseTotal += Detalles[i].Precio * Detalles[i].Unidades;
+                            }
+                            catch (ArgumentOutOfRangeException e)
+                            {
+                                Console.WriteLine("IndexOutOfRangeException, no existe el indice: " + e.Message);
+                                continue;
+                            }
+                        }
+                    }
+                    catch (OverflowException e)
+                    {
+                        Console.WriteLine("OverflowException, base total demasiado grande: " + e.Message);
+                        baseTotal = decimal.MaxValue;
+                    }
+                }
+                return baseTotal;
+            }
         }
 
         public decimal Cuota
@@ -36,6 +65,25 @@ namespace PRN2_DAPL
         }
 
         // Se implementa la propiedad abstracta Total de DocumentoMercantil
-        public override decimal Total => (BaseImponible * (1 + (decimal)PorcentajeIVA)) + Cuota;
+        public override decimal Total
+        {
+            get
+            {
+                decimal total;
+                checked
+                {
+                    try
+                    {
+                        total = (BaseImponible * (1 + (decimal)PorcentajeIVA)) + Cuota;
+                    }
+                    catch (OverflowException e)
+                    {
+                        Console.WriteLine("OverflowException, total demasiado grande: " + e.Message);
+                        total = decimal.MaxValue;
+                    }
+                }
+                return total;
+            }
+        }
     }
 }
