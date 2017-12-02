@@ -6,16 +6,15 @@ namespace PRN2_DAPL
 {
     class Persona
     {
-        private string nombre;
-
-        public void SetNombre(string nuevoNombre)
+        public Persona(string nombre)
         {
-            this.nombre = nuevoNombre;
+            Nombre = nombre;
         }
 
-        public void Saludar()
+        public string Nombre
         {
-            Console.WriteLine("Hola soy " + this.nombre);
+            get;
+            set;
         }
     }
 }
