@@ -27,5 +27,14 @@ namespace PRN2_DAPL
         {
             get;
         }
+
+        public override string ToString()
+        {
+            return "[ " +
+                "Acción: " + Accion.ToString() +
+                " Hora Registro: " + HoraRegistro.ToString() +
+                " Empleado: " + Empleado.ToString() +
+                "]";
+        }
     }
 }
