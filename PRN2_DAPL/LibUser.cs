@@ -17,6 +17,14 @@ namespace PRN2_DAPL
             this.username = username;
         }
 
+        public LibUser(Guid accountNumber, string firstName, string lastName, string username)
+        {
+            this.accountNumber = accountNumber;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.username = username;
+        }
+
         public virtual Privilege Privilege => Privilege.NO_LOAN;
 
         public string Rights
