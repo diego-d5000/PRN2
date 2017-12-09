@@ -673,11 +673,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\diego\\source\\repos\\PRN2_DAPL\\PRN2_DAPL\\PRN2_DAPL.csproj",
+      "projectUniqueName": "C:\\Users\\diego\\Desktop\\PRN2\\PRN2_DAPL\\PRN2_DAPL.csproj",
       "projectName": "PRN2_DAPL",
-      "projectPath": "C:\\Users\\diego\\source\\repos\\PRN2_DAPL\\PRN2_DAPL\\PRN2_DAPL.csproj",
+      "projectPath": "C:\\Users\\diego\\Desktop\\PRN2\\PRN2_DAPL\\PRN2_DAPL.csproj",
       "packagesPath": "C:\\Users\\diego\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\diego\\source\\repos\\PRN2_DAPL\\PRN2_DAPL\\obj\\",
+      "outputPath": "C:\\Users\\diego\\Desktop\\PRN2\\PRN2_DAPL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
